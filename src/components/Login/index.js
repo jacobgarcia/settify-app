@@ -1,15 +1,47 @@
 import React from 'react';
-import {StyleSheet, View, Image, ProgressViewIOS, Linking} from 'react-native';
+import {StyleSheet, View, Image, ProgressViewIOS} from 'react-native';
+import {AuthSession} from 'expo';
 
 import Logo from 'assets/image.png';
 import {Title, Subtitle} from './styled';
 import Button from 'components/Button';
+import useAuth from 'hooks/auth';
 
-export default () => {
-  const handleLogin = () => {
-    Linking.openURL(
-      'https://accounts.spotify.com/authorize?client_id=8be10436cdeb41deab45fc7502265679&redirect_uri=http://localhost:3000&scope=user-read-private%20user-read-email%20playlist-modify-public&response_type=token&state=123',
-    );
+const Login = () => {
+  const {authenticate, hasToken} = useAuth();
+  console.log(hasToken);
+  const testLogin = async () => {
+    try {
+      await authenticate({
+        token: 'token',
+        expiration: parseInt(Date.now(), 10) + parseInt(3600 * 1000, 10),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleLogin = async () => {
+    try {
+      const redirectUrl = AuthSession.getRedirectUrl();
+      const data = await AuthSession.startAsync({
+        authUrl: `https://accounts.spotify.com/authorize?client_id=8be10436cdeb41deab45fc7502265679&redirect_uri=${encodeURIComponent(
+          redirectUrl,
+        )}&scope=user-read-private%20user-read-email%20playlist-modify-public&response_type=token&state=123`,
+      });
+
+      // Set token
+      const {access_token: token, expires_in: expiration} = data.params;
+      if (token) {
+        // Set token
+        authenticate({
+          token,
+          expiration:
+            parseInt(Date.now(), 10) + parseInt(expiration * 1000, 10),
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -27,7 +59,7 @@ export default () => {
       <View style={styles.bottomContainer}>
         <Button
           title="Login With Spotify"
-          onPress={() => handleLogin()}
+          onPress={() => testLogin()}
           color="#fff"
         />
       </View>
@@ -66,3 +98,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default Login;

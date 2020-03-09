@@ -11,7 +11,15 @@ import {View, Text, StyleSheet} from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Login from 'components/Login';
+import {AuthProvider} from 'contexts/auth';
+
 import * as Font from 'expo-font';
+
+import('./ReactotronConfig').then(() => {
+  console.log('Reactotron Configured');
+  const Reactotron = require('reactotron-react-native').default;
+  Reactotron.log('Hello world');
+});
 
 const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -27,7 +35,17 @@ const App = () => {
     loadFonts();
   }, []);
 
-  return <>{!fontLoaded ? <Text>Loading...</Text> : <Login />}</>;
+  return (
+    <>
+      {!fontLoaded ? (
+        <Text>Loading...</Text>
+      ) : (
+        <AuthProvider>
+          <Login />
+        </AuthProvider>
+      )}
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
