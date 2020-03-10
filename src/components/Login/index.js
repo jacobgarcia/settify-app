@@ -5,6 +5,7 @@ import {
   Image,
   ProgressViewIOS,
   NativeModules,
+  ActionSheetIOS,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -24,6 +25,7 @@ import {
   Toast,
   Root,
   CheckBox,
+  ActionSheet,
 } from 'native-base';
 
 import {Title, Subtitle, AppTitle, PlaylistsContainer} from './styled';
@@ -31,6 +33,7 @@ import LoginButton from 'components/Button';
 import Logo from 'assets/image.png';
 import useAuth from 'hooks/auth';
 import defaultData from './data';
+import theme from 'styles/theme.style.js';
 import API from 'api';
 
 const ITEMS_PER_PAGE = 20;
@@ -101,12 +104,27 @@ const Playlists = () => {
                 </Body>
                 <Right>
                   <Button transparent>
-                    <CheckBox checked={selectedRows.includes(playlist.id)} />
+                    <CheckBox
+                      checked={selectedRows.includes(playlist.id)}
+                      color={theme.COLOR_PRIMARY}
+                    />
                   </Button>
                 </Right>
               </ListItem>
             ))}
           </List>
+          {selectedRows.length === 2 &&
+            ActionSheetIOS.showActionSheetWithOptions(
+              {
+                options: ['Cancel', 'Intersect', 'Unify', 'IntersectJS'],
+                cancelButtonIndex: 0,
+              },
+              buttonIndex => {
+                if (buttonIndex === 1) {
+                  /* intersect action */
+                }
+              },
+            )}
         </Content>
       </Container>
     </Root>
