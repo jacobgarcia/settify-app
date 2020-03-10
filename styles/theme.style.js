@@ -3,6 +3,9 @@ export default {
   FONT_WEIGHT_MEDIUM: 500,
   SPACE_200: '8px',
   SPACE_400: '16px',
+  SPACE_500: '24px',
   COLOR_PRIMARY: '#9373d8',
   COLOR_LIGHT_GREY_100: '#fff',
+  COLOR_TITLE: '#113d4c',
+  FONT_WEIGHT_BOLD: 700,
 };

@@ -32,10 +32,10 @@ const getProfile = async () => {
 
 const setProfile = async (name, email, id, image) => {
   try {
-    await AsyncStorage.setItem(NAME, name);
-    await AsyncStorage.setItem(EMAIL, email);
-    await AsyncStorage.setItem(ID, id);
-    await AsyncStorage.setItem(IMAGE, image);
+    await AsyncStorage.setItem(NAME, JSON.stringify(name));
+    await AsyncStorage.setItem(EMAIL, JSON.stringify(email));
+    await AsyncStorage.setItem(ID, JSON.stringify(id));
+    await AsyncStorage.setItem(IMAGE, JSON.stringify(image));
   } catch (error) {
     console.error(error);
   }
@@ -84,7 +84,6 @@ export const AuthProvider = ({children}) => {
         email,
         images,
       } = await API.Spotify.GetProfile();
-      console.log(name);
       await setProfile(name, email, id, images);
     } catch (error) {
       console.error('Ocurrió un error en el servidor al iniciar sesión.');

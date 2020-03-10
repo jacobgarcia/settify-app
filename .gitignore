@@ -15,3 +15,6 @@ web-report/
 
 # errorShots
 errorShots
+
+# ENVIRONMENT
+.env

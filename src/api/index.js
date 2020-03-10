@@ -4,17 +4,15 @@ import queryString from 'query-string';
 
 const SETTIFY_TOKEN_NAME = 'spotifyToken';
 
-const baseURL = process.env.REACT_APP_API_URL;
+import {REACT_APP_API_URL as baseURL} from 'react-native-dotenv';
 
 const handleUnauthorized = async ({status}) => {
   if (status === 401) {
     try {
-      await AsyncStorage.remove(SETTIFY_TOKEN_NAME);
+      await AsyncStorage.removeItem(SETTIFY_TOKEN_NAME);
     } catch (error) {
       console.error(error);
-    } finally {
     }
-    window.location.reload();
   }
 
   if (status === 403) {
@@ -40,7 +38,8 @@ const request = async ({
 
   if (!skipAuth) {
     try {
-      const {token} = await AsyncStorage.getItem(SETTIFY_TOKEN_NAME);
+      const {token} =
+        JSON.parse(await AsyncStorage.getItem(SETTIFY_TOKEN_NAME)) || {};
       headers.Authorization = `Bearer ${token}`;
     } catch (error) {
       console.error(error);
@@ -54,7 +53,6 @@ const request = async ({
     } else if (isFile) {
       responseType = 'blob';
     }
-
     const response = await axios({
       baseURL,
       url,

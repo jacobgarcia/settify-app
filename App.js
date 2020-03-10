@@ -16,9 +16,7 @@ import {AuthProvider} from 'contexts/auth';
 import * as Font from 'expo-font';
 
 import('./ReactotronConfig').then(() => {
-  console.log('Reactotron Configured');
   const Reactotron = require('reactotron-react-native').default;
-  Reactotron.log('Hello world');
 });
 
 const App = () => {
