@@ -77,7 +77,7 @@ const Playlists = () => {
                   <Thumbnail
                     square
                     source={{
-                      uri: 'https://randomuser.me/api/portraits/men/62.jpg',
+                      uri: playlist.image.url,
                     }}
                   />
                 </Left>
