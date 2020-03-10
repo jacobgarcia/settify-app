@@ -1,7 +1,6 @@
 import axios from 'axios';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, NativeModules} from 'react-native';
 import queryString from 'query-string';
-
 const SETTIFY_TOKEN_NAME = 'spotifyToken';
 
 import {REACT_APP_API_URL as baseURL} from 'react-native-dotenv';
@@ -12,6 +11,8 @@ const handleUnauthorized = async ({status}) => {
       await AsyncStorage.removeItem(SETTIFY_TOKEN_NAME);
     } catch (error) {
       console.error(error);
+    } finally {
+      NativeModules.DevSettings.reload();
     }
   }
 

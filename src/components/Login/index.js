@@ -23,6 +23,7 @@ import {
   Button,
   Toast,
   Root,
+  CheckBox,
 } from 'native-base';
 
 import {Title, Subtitle, AppTitle, PlaylistsContainer} from './styled';
@@ -37,7 +38,7 @@ const ITEMS_PER_PAGE = 20;
 const Playlists = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [selectedRows, setSelectedRows] = useState([]);
   useEffect(() => {
     getData();
   }, []);
@@ -63,6 +64,14 @@ const Playlists = () => {
     }
   };
 
+  const handleCheck = id => {
+    if (selectedRows.includes(id)) {
+      setSelectedRows(state => state.filter(e => e !== id));
+    } else {
+      setSelectedRows(state => [...state, id]);
+    }
+  };
+
   return (
     <Root>
       <Container>
@@ -72,7 +81,10 @@ const Playlists = () => {
         <Content>
           <List>
             {data.map(playlist => (
-              <ListItem thumbnail key={playlist.id}>
+              <ListItem
+                thumbnail
+                key={playlist.id}
+                onPress={() => handleCheck(playlist.id)}>
                 <Left>
                   <Thumbnail
                     square
@@ -89,7 +101,7 @@ const Playlists = () => {
                 </Body>
                 <Right>
                   <Button transparent>
-                    <Text>View</Text>
+                    <CheckBox checked={selectedRows.includes(playlist.id)} />
                   </Button>
                 </Right>
               </ListItem>
