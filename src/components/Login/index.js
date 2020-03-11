@@ -3,18 +3,28 @@ import {StyleSheet, View, Image, NativeModules, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {AuthSession} from 'expo';
-
+import {Ionicons} from '@expo/vector-icons';
+import {Container, Header, Content, Thumbnail} from 'native-base';
 import Playlists from 'views/Playlists';
 import LoginButton from 'components/Button';
 import Logo from 'assets/image.png';
 import useAuth from 'hooks/auth';
+import theme from 'styles/theme.style.js';
 import {Title, Subtitle} from './styled';
 
 function SettingsScreen() {
+  const uri = 'https://randomuser.me/api/portraits/men/32.jpg';
   return (
-    <View style={styles.settings}>
-      <Text>Settings!</Text>
-    </View>
+    <Container>
+      <Header />
+      <Content contentContainerStyle={styles.logo}>
+        <Thumbnail
+          style={{height: 120, width: 120, borderRadius: 120 / 2}}
+          large
+          source={{uri: uri}}
+        />
+      </Content>
+    </Container>
   );
 }
 
@@ -82,7 +92,25 @@ const Login = () => {
         </View>
       ) : (
         <NavigationContainer>
-          <Tab.Navigator>
+          <Tab.Navigator
+            screenOptions={({route}) => ({
+              tabBarIcon: ({focused, color, size}) => {
+                let iconName;
+
+                if (route.name === 'Playlists') {
+                  iconName = 'ios-musical-notes';
+                } else if (route.name === 'Settings') {
+                  iconName = 'ios-settings';
+                }
+
+                // You can return any component that you like here!
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+            })}
+            tabBarOptions={{
+              activeTintColor: theme.COLOR_PRIMARY,
+              inactiveTintColor: 'gray',
+            }}>
             <Tab.Screen name="Playlists" component={Playlists} />
             <Tab.Screen name="Settings" component={SettingsScreen} />
           </Tab.Navigator>
@@ -135,6 +163,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  logo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
   },
 });
 
