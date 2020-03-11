@@ -1,6 +1,8 @@
 import React from 'react';
-import {Button as RNButton, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
+
+import {StyleSheet} from 'react-native';
+import {Button as RNButton, Text} from 'native-base';
 import theme from 'styles/theme.style.js';
 import StyledButtonView from './styled';
 
@@ -32,7 +34,9 @@ const Button = props => {
         rounded={rounded}
         {...rest}
         style={styles.button}
-      />
+        transparent>
+        <Text>{text}</Text>
+      </RNButton>
     </StyledButtonView>
   );
 };

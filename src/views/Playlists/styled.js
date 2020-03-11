@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import theme from 'styles/theme.style.js';
+import {Title} from 'native-base';
 
-const AppTitle = styled.Text`
-  color: ${theme.COLOR_TITLE};
-  font-size: 18px;
-  font-weight: ${theme.FONT_WEIGHT_BOLD};
+const AppTitle = styled(Title)`
+  color: white;
 `;
 
 export {AppTitle};

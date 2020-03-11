@@ -20,14 +20,16 @@ import {
   Right,
   Root,
   Text,
+  Title,
   Toast,
   Thumbnail,
 } from 'native-base';
 
 import theme from 'styles/theme.style.js';
 import Notify from 'utils/Notify';
-import {AppTitle} from './styled';
 import API from 'api';
+
+import {AppTitle} from './styled';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -120,8 +122,12 @@ const Playlists = () => {
         </View>
       ) : (
         <Container>
-          <Header>
-            <AppTitle>My Playlists</AppTitle>
+          <Header style={{backgroundColor: theme.COLOR_PRIMARY}}>
+            <Left />
+            <Body>
+              <AppTitle>My Playlists</AppTitle>
+            </Body>
+            <Right />
           </Header>
           <Content>
             <List>

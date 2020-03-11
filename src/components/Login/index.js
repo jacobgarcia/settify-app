@@ -1,12 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  ProgressViewIOS,
-  NativeModules,
-  Text,
-} from 'react-native';
+import {StyleSheet, View, Image, NativeModules, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {AuthSession} from 'expo';
@@ -34,6 +27,7 @@ const Login = () => {
   useEffect(() => {
     syncHasToken();
   }, []);
+
   const handleLogin = async () => {
     try {
       const redirectUrl = AuthSession.getRedirectUrl();
@@ -77,11 +71,11 @@ const Login = () => {
           <View style={styles.middleContainer}>
             <Image source={Logo} style={styles.image} />
           </View>
-          <ProgressViewIOS number={1} />
           <View style={styles.bottomContainer}>
             <LoginButton
-              title="Login With Spotify"
+              text="Login With Spotify"
               onPress={() => handleLogin()}
+              rounded
               color="#fff"
             />
           </View>

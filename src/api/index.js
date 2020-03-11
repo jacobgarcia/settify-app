@@ -1,9 +1,10 @@
 import axios from 'axios';
 import {AsyncStorage, NativeModules} from 'react-native';
 import queryString from 'query-string';
-const SETTIFY_TOKEN_NAME = 'spotifyToken';
 
 import {REACT_APP_API_URL as baseURL} from 'react-native-dotenv';
+
+const SETTIFY_TOKEN_NAME = 'spotifyToken';
 
 const handleUnauthorized = async ({status}) => {
   if (status === 401) {
@@ -69,7 +70,6 @@ const request = async ({
 
     return response.data;
   } catch (error) {
-    console.log(error.response);
     const {status, data: message} = error.response;
 
     return handleUnauthorized({status, message, reload: !skipAuth});
