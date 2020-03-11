@@ -1,13 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {
-  ActionSheetIOS,
-  ActivityIndicator,
-  Alert,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import {Linking} from 'expo';
 import {
+  ActionSheet,
   Body,
   Button,
   CheckBox,
@@ -20,7 +15,6 @@ import {
   Right,
   Root,
   Text,
-  Title,
   Toast,
   Thumbnail,
 } from 'native-base';
@@ -80,7 +74,6 @@ const Playlists = () => {
       );
       const endTime = Date.now();
       const time = endTime - startTime;
-
       if (response) {
         Alert.alert(
           `Your new playlist ${response.name} is ready!`,
@@ -163,13 +156,15 @@ const Playlists = () => {
               ))}
             </List>
             {selectedRows.length === 2 &&
-              ActionSheetIOS.showActionSheetWithOptions(
+              ActionSheet.show(
                 {
-                  options: ['Cancel', 'Intersect', 'Unify', 'IntersectJS'],
-                  cancelButtonIndex: 0,
+                  options: ['Intersect', 'Unify', 'IntersectJS', 'Cancel'],
+                  cancelButtonIndex: 3,
+                  destructiveButtonIndex: 2,
+                  title: 'Apply a set method',
                 },
                 buttonIndex => {
-                  if (buttonIndex === 1) {
+                  if (buttonIndex === 0) {
                     /* intersect action */
                     getIntersection();
                   }

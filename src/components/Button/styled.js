@@ -1,4 +1,5 @@
 import styled, {css} from 'styled-components';
+import {Text} from 'native-base';
 import theme from 'styles/theme.style.js';
 const PRIMARY_STYLE = css`
   background-color: ${theme.COLOR_PRIMARY};
@@ -42,17 +43,8 @@ const StyledButtonView = styled.View`
   ${props => BUTTON_STYLES[props.kind] || BUTTON_STYLES.primary}
 `;
 
-/*
-border: none;
-font-family: ${theme.FAMILY_SANS_SERIF};
-font-weight: bold;
-line-height: 32px;
-text-align: center;
-width: auto;
-font-size: 16px;
-font-weight: ${theme.FONT_WEIGHT_MEDIUM};
-min-height: 36px;
-min-width: 120px;
+const ButtonText = styled(Text)`
+  color: white;
+`;
 
- */
-export default StyledButtonView;
+export {StyledButtonView, ButtonText};

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {StyleSheet} from 'react-native';
 import {Button as RNButton, Text} from 'native-base';
 import theme from 'styles/theme.style.js';
-import StyledButtonView from './styled';
+import {StyledButtonView, ButtonText} from './styled';
 
 const Button = props => {
   const {
@@ -35,7 +35,7 @@ const Button = props => {
         {...rest}
         style={styles.button}
         transparent>
-        <Text>{text}</Text>
+        <ButtonText>{text}</ButtonText>
       </RNButton>
     </StyledButtonView>
   );
