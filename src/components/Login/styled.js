@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import theme from 'styles/theme.style.js';
 
 const Title = styled.Text`
   font-size: 40px;
@@ -17,10 +16,4 @@ const Subtitle = styled.Text`
   font-weight: 400;
 `;
 
-const AppTitle = styled.Text`
-  color: ${theme.COLOR_TITLE};
-  font-size: 18px;
-  font-weight: ${theme.FONT_WEIGHT_BOLD};
-`;
-
-export {Title, Subtitle, AppTitle};
+export {Title, Subtitle};

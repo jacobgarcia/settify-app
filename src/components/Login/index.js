@@ -5,135 +5,21 @@ import {
   Image,
   ProgressViewIOS,
   NativeModules,
-  ActionSheetIOS,
+  Text,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {AuthSession} from 'expo';
-import {
-  Container,
-  Header,
-  Content,
-  List,
-  ListItem,
-  Thumbnail,
-  Text,
-  Left,
-  Body,
-  Right,
-  Button,
-  Toast,
-  Root,
-  CheckBox,
-  ActionSheet,
-} from 'native-base';
 
-import {Title, Subtitle, AppTitle, PlaylistsContainer} from './styled';
+import Playlists from 'views/Playlists';
 import LoginButton from 'components/Button';
 import Logo from 'assets/image.png';
 import useAuth from 'hooks/auth';
-import defaultData from './data';
-import theme from 'styles/theme.style.js';
-import API from 'api';
-
-const ITEMS_PER_PAGE = 20;
-
-const Playlists = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedRows, setSelectedRows] = useState([]);
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    try {
-      const page = 1;
-      const offset = ITEMS_PER_PAGE * ((parseInt(page, 10) || 1) - 1);
-      const {items, total} = await API.Spotify.GetPlaylists(offset);
-      setData(items);
-    } catch (error) {
-      const debug = require('reactotron-react-native').default;
-      console.log(error);
-      Toast.show({
-        text: 'An error occured while getting the playlists',
-        type: 'danger',
-        textStyle: {
-          textAlign: 'center',
-        },
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCheck = id => {
-    if (selectedRows.includes(id)) {
-      setSelectedRows(state => state.filter(e => e !== id));
-    } else {
-      setSelectedRows(state => [...state, id]);
-    }
-  };
-
-  return (
-    <Root>
-      <Container>
-        <Header>
-          <AppTitle>My Playlists</AppTitle>
-        </Header>
-        <Content>
-          <List>
-            {data.map(playlist => (
-              <ListItem
-                thumbnail
-                key={playlist.id}
-                onPress={() => handleCheck(playlist.id)}>
-                <Left>
-                  <Thumbnail
-                    square
-                    source={{
-                      uri: playlist.image.url,
-                    }}
-                  />
-                </Left>
-                <Body>
-                  <Text>{playlist.name}</Text>
-                  <Text note numberOfLines={1}>
-                    by {playlist.owner}
-                  </Text>
-                </Body>
-                <Right>
-                  <Button transparent>
-                    <CheckBox
-                      checked={selectedRows.includes(playlist.id)}
-                      color={theme.COLOR_PRIMARY}
-                    />
-                  </Button>
-                </Right>
-              </ListItem>
-            ))}
-          </List>
-          {selectedRows.length === 2 &&
-            ActionSheetIOS.showActionSheetWithOptions(
-              {
-                options: ['Cancel', 'Intersect', 'Unify', 'IntersectJS'],
-                cancelButtonIndex: 0,
-              },
-              buttonIndex => {
-                if (buttonIndex === 1) {
-                  /* intersect action */
-                }
-              },
-            )}
-        </Content>
-      </Container>
-    </Root>
-  );
-};
+import {Title, Subtitle} from './styled';
 
 function SettingsScreen() {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={styles.settings}>
       <Text>Settings!</Text>
     </View>
   );
@@ -143,8 +29,7 @@ const Tab = createBottomTabNavigator();
 
 const Login = () => {
   const {authenticate, hasToken} = useAuth();
-  const [selectedTab, setSelectedTab] = useState(null);
-  const [isAuth, setIsAuth] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
     syncHasToken();
@@ -242,6 +127,20 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     justifyContent: 'center',
+  },
+  loadingContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  settings: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

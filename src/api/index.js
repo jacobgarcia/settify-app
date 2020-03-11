@@ -69,6 +69,7 @@ const request = async ({
 
     return response.data;
   } catch (error) {
+    console.log(error.response);
     const {status, data: message} = error.response;
 
     return handleUnauthorized({status, message, reload: !skipAuth});
