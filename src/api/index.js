@@ -70,8 +70,8 @@ const request = async ({
 
     return response.data;
   } catch (error) {
+    console.error(error);
     const {status, data: message} = error.response;
-
     return handleUnauthorized({status, message, reload: !skipAuth});
   }
 };
