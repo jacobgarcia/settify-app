@@ -21,8 +21,9 @@ import {
 
 import theme from 'styles/theme.style.js';
 import Notify from 'utils/Notify';
-import API from 'api';
 
+import API from 'api';
+import {intersect} from 'api/spotify';
 import {AppTitle} from './styled';
 
 const ITEMS_PER_PAGE = 20;
@@ -72,6 +73,91 @@ const Playlists = () => {
         firstPlaylist,
         secondPlaylist,
       );
+      const endTime = Date.now();
+      const time = endTime - startTime;
+      if (response) {
+        Alert.alert(
+          `Your new playlist ${response.name} is ready!`,
+          `${response.name} contains a total of ${
+            response.tracks
+          } tracks. You can check your playlist on Spotify right now or continue in Settify. It took me around ${time} ms to process this request.`,
+          [
+            {
+              text: 'Take me there!',
+              onPress: () =>
+                Linking.openURL(
+                  `https://open.spotify.com/playlist/${response.href}`,
+                ),
+              style: 'cancel',
+            },
+            {text: 'Continue'},
+          ],
+        );
+      } else {
+        Alert.alert(
+          'Your playlist could not be created :(',
+          `There are no tracks matching between the playlists. It took me around ${time} ms to process this request.`,
+          [{text: 'OK'}],
+        );
+      }
+    } catch (error) {
+      Notify.error('An error occured while intersecting the playlists', error);
+    } finally {
+      setSelectedRows([]);
+      setLoading(false);
+    }
+  };
+
+  const getUnion = async () => {
+    try {
+      setLoading(true);
+      const [firstPlaylist, secondPlaylist] = selectedRows;
+      const startTime = Date.now();
+      const response = await API.Spotify.GetUnion(
+        firstPlaylist,
+        secondPlaylist,
+      );
+      const endTime = Date.now();
+      const time = endTime - startTime;
+      if (response) {
+        Alert.alert(
+          `Your new playlist ${response.name} is ready!`,
+          `${response.name} contains a total of ${
+            response.tracks
+          } tracks. You can check your playlist on Spotify right now or continue in Settify. It took me around ${time} ms to process this request.`,
+          [
+            {
+              text: 'Take me there!',
+              onPress: () =>
+                Linking.openURL(
+                  `https://open.spotify.com/playlist/${response.href}`,
+                ),
+              style: 'cancel',
+            },
+            {text: 'Continue'},
+          ],
+        );
+      } else {
+        Alert.alert(
+          'Your playlist could not be created :(',
+          `There are no tracks matching between the playlists. It took me around ${time} ms to process this request.`,
+          [{text: 'OK'}],
+        );
+      }
+    } catch (error) {
+      Notify.error('An error occured while intersecting the playlists', error);
+    } finally {
+      setSelectedRows([]);
+      setLoading(false);
+    }
+  };
+
+  const getIntersectionJS = async () => {
+    try {
+      setLoading(true);
+      const [firstPlaylist, secondPlaylist] = selectedRows;
+      const startTime = Date.now();
+      const response = await intersect(firstPlaylist, secondPlaylist);
       const endTime = Date.now();
       const time = endTime - startTime;
       if (response) {
@@ -164,9 +250,17 @@ const Playlists = () => {
                   title: 'Apply a set method',
                 },
                 buttonIndex => {
+                  /* intersect action */
                   if (buttonIndex === 0) {
-                    /* intersect action */
                     getIntersection();
+                  }
+                  /* union action */
+                  if (buttonIndex === 1) {
+                    getUnion();
+                  }
+                  /* intersection JS action */
+                  if (buttonIndex === 2) {
+                    getIntersectionJS();
                   }
                 },
               )}

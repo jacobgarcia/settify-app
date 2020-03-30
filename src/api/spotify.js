@@ -1,7 +1,9 @@
 import axios from 'axios';
-import store from 'store';
 import queryString from 'query-string';
+import {AsyncStorage, NativeModules} from 'react-native';
 import {uniqueNamesGenerator, adjectives, colors} from 'unique-names-generator';
+
+import {REACT_APP_SPOTIFY_API_URL as baseURL} from 'react-native-dotenv';
 
 const customConfig = {
   dictionaries: [adjectives, colors],
@@ -13,12 +15,15 @@ const shortName = () => uniqueNamesGenerator(customConfig);
 
 const SETTIFY_TOKEN_NAME = 'spotifyToken';
 
-const baseURL = process.env.REACT_APP_SPOTIFY_API_URL;
-
-const handleUnauthorized = ({status}) => {
+const handleUnauthorized = async ({status}) => {
   if (status === 401) {
-    store.remove(SETTIFY_TOKEN_NAME);
-    window.location.reload();
+    try {
+      await AsyncStorage.removeItem(SETTIFY_TOKEN_NAME);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      NativeModules.DevSettings.reload();
+    }
   }
 
   if (status === 403) {
@@ -43,7 +48,13 @@ const request = async ({
   const headers = {'Content-Type': contentType};
 
   if (!skipAuth) {
-    headers.Authorization = `Bearer ${store.get(SETTIFY_TOKEN_NAME).token}`;
+    try {
+      const {token} =
+        JSON.parse(await AsyncStorage.getItem(SETTIFY_TOKEN_NAME)) || {};
+      headers.Authorization = `Bearer ${token}`;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   try {
@@ -119,7 +130,6 @@ const operation = async (firstPlaylist, secondPlaylist, method) => {
       tracks: uris.length,
     };
   } catch (error) {
-    console.error(error);
     throw new Error();
   }
 };
@@ -140,18 +150,6 @@ const getIntersection = (firstPlaylistTracks, secondPlaylistTracks) => {
   });
   return intersection;
 };
-
-// const getOptimizedIntersection = (
-//   firstPlaylistTracks,
-//   secondPlaylistTracks
-// ) => {
-//   const intersection = firstPlaylistTracks.filter(
-//     ((set) => (a) => set.has(a.track.id))(
-//       new Set(secondPlaylistTracks.map((b) => b.track.id))
-//     )
-//   );
-//   return intersection;
-// };
 
 const intersect = async (firstPlaylist, secondPlaylist) => {
   return operation(firstPlaylist, secondPlaylist, getIntersection);
