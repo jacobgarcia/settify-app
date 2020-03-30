@@ -118,7 +118,7 @@ const Playlists = () => {
           <Header style={{backgroundColor: theme.COLOR_PRIMARY}}>
             <Left />
             <Body>
-              <AppTitle>My Playlists</AppTitle>
+              <AppTitle>Playlists</AppTitle>
             </Body>
             <Right />
           </Header>

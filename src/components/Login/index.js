@@ -11,13 +11,25 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {AuthSession} from 'expo';
 import {Ionicons} from '@expo/vector-icons';
-import {Container, Header, Content, Thumbnail, Toast, Root} from 'native-base';
+import {
+  Body,
+  Container,
+  Header,
+  Content,
+  Left,
+  Thumbnail,
+  Toast,
+  Right,
+  Root,
+} from 'native-base';
 import Playlists from 'views/Playlists';
 import LoginButton from 'components/Button';
 import Logo from 'assets/image.png';
 import useAuth from 'hooks/auth';
 import theme from 'styles/theme.style.js';
 import {Title, Subtitle} from './styled';
+
+import {AppTitle} from 'components/AppTitle';
 
 import API from 'api';
 
@@ -57,7 +69,14 @@ function SettingsScreen() {
         </View>
       ) : (
         <Container>
-          <Header style={{backgroundColor: theme.COLOR_PRIMARY}} />
+          <Header style={{backgroundColor: theme.COLOR_PRIMARY}}>
+            <Left />
+            <Body>
+              <AppTitle>Profile</AppTitle>
+            </Body>
+            <Right />
+          </Header>
+
           <Content contentContainerStyle={styles.logo}>
             <Thumbnail
               style={{
