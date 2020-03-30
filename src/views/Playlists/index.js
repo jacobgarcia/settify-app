@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  NativeModules,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {Linking} from 'expo';
 import {
   ActionSheet,
@@ -90,7 +96,10 @@ const Playlists = () => {
                 ),
               style: 'cancel',
             },
-            {text: 'Continue'},
+            {
+              text: 'Continue',
+              onPress: () => NativeModules.DevSettings.reload(),
+            },
           ],
         );
       } else {
@@ -134,7 +143,10 @@ const Playlists = () => {
                 ),
               style: 'cancel',
             },
-            {text: 'Continue'},
+            {
+              text: 'Continue',
+              onPress: () => NativeModules.DevSettings.reload(),
+            },
           ],
         );
       } else {
@@ -175,7 +187,10 @@ const Playlists = () => {
                 ),
               style: 'cancel',
             },
-            {text: 'Continue'},
+            {
+              text: 'Continue',
+              onPress: () => NativeModules.DevSettings.reload(),
+            },
           ],
         );
       } else {
