@@ -7,7 +7,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Text} from 'react-native';
+import {Text, AsyncStorage} from 'react-native';
 
 import Login from 'components/Login';
 import {AuthProvider} from 'contexts/auth';

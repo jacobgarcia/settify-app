@@ -164,7 +164,7 @@ const Login = () => {
       const data = await AuthSession.startAsync({
         authUrl: `https://accounts.spotify.com/authorize?client_id=8be10436cdeb41deab45fc7502265679&redirect_uri=${encodeURIComponent(
           redirectUrl,
-        )}&scope=user-read-private%20user-read-email%20playlist-modify-public&response_type=token&state=123`,
+        )}&scope=user-read-private%20user-read-email%20playlist-modify-public%20playlist-read-private&response_type=token&state=123`,
       });
 
       // Set token

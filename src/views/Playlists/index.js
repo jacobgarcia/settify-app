@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   Alert,
+  FlatList,
   NativeModules,
   StyleSheet,
   View,
@@ -10,21 +11,15 @@ import {Linking} from 'expo';
 import {
   ActionSheet,
   Body,
-  Button,
-  CheckBox,
   Container,
-  Content,
   Header,
   Left,
-  List,
-  ListItem,
   Right,
   Root,
-  Text,
   Toast,
-  Thumbnail,
 } from 'native-base';
 
+import Item from 'components/Item';
 import theme from 'styles/theme.style.js';
 import Notify from 'utils/Notify';
 
@@ -38,6 +33,7 @@ const Playlists = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     getData();
@@ -59,9 +55,14 @@ const Playlists = () => {
       });
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await getData();
+  };
   const handleCheck = id => {
     if (selectedRows.includes(id)) {
       setSelectedRows(state => state.filter(e => e !== id));
@@ -223,63 +224,43 @@ const Playlists = () => {
             </Body>
             <Right />
           </Header>
-          <Content>
-            <List>
-              {data.map(playlist => (
-                <ListItem
-                  thumbnail
-                  key={playlist.id}
-                  onPress={() => handleCheck(playlist.id)}>
-                  <Left>
-                    <Thumbnail
-                      square
-                      source={{
-                        uri: playlist.image,
-                      }}
-                    />
-                  </Left>
-                  <Body>
-                    <Text>{playlist.name}</Text>
-                    <Text note numberOfLines={1}>
-                      by {playlist.owner}
-                    </Text>
-                  </Body>
-                  <Right>
-                    <Button transparent>
-                      <CheckBox
-                        checked={selectedRows.includes(playlist.id)}
-                        color={theme.COLOR_PRIMARY}
-                        onPress={() => handleCheck(playlist.id)}
-                      />
-                    </Button>
-                  </Right>
-                </ListItem>
-              ))}
-            </List>
-            {selectedRows.length === 2 &&
-              ActionSheet.show(
-                {
-                  options: ['Intersect', 'Unify', 'IntersectJS', 'Cancel'],
-                  cancelButtonIndex: 3,
-                  destructiveButtonIndex: 2,
-                  title: 'Apply a set method',
-                },
-                buttonIndex => {
-                  /* intersect action */
-                  if (buttonIndex === 0) {
-                    getIntersection();
-                  }
-                  /* union action */
-                  if (buttonIndex === 1) {
-                    getUnion();
-                  }
-                  /* intersection JS action */
-                  if (buttonIndex === 2) {
-                    getIntersectionJS();
-                  }
-                },
-              )}
-          </Content>
+          <FlatList
+            data={data}
+            renderItem={({item}) => (
+              <Item
+                playlist={item}
+                handleCheck={handleCheck}
+                selectedRows={selectedRows}
+                theme={theme}
+              />
+            )}
+            keyExtractor={item => item.id}
+            onRefresh={handleRefresh}
+            refreshing={refreshing}
+          />
+          {selectedRows.length === 2 &&
+            ActionSheet.show(
+              {
+                options: ['Intersect', 'Unify', 'IntersectJS', 'Cancel'],
+                cancelButtonIndex: 3,
+                destructiveButtonIndex: 2,
+                title: 'Apply a set method',
+              },
+              buttonIndex => {
+                /* intersect action */
+                if (buttonIndex === 0) {
+                  getIntersection();
+                }
+                /* union action */
+                if (buttonIndex === 1) {
+                  getUnion();
+                }
+                /* intersection JS action */
+                if (buttonIndex === 2) {
+                  getIntersectionJS();
+                }
+              },
+            )}
         </Container>
       )}
     </Root>
