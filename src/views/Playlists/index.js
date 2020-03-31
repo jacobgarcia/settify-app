@@ -34,17 +34,27 @@ const Playlists = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [page]);
 
   const getData = async () => {
     try {
-      const page = 1;
       const offset = ITEMS_PER_PAGE * ((parseInt(page, 10) || 1) - 1);
       const {items} = await API.Spotify.GetPlaylists(offset);
-      setData(items);
+      if (refreshing) {
+        return setData(items);
+      }
+      if (items) {
+        setData(prevData => {
+          return [...prevData, ...items];
+        });
+      } else {
+        setLoadingMore(false);
+      }
     } catch (error) {
       Toast.show({
         text: 'An error occured while getting the playlists',
@@ -61,8 +71,14 @@ const Playlists = () => {
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await getData();
+    setPage(1);
   };
+
+  const handleLoadMore = async () => {
+    setLoadingMore(true);
+    setPage(prevPage => prevPage + 1);
+  };
+
   const handleCheck = id => {
     if (selectedRows.includes(id)) {
       setSelectedRows(state => state.filter(e => e !== id));
@@ -116,6 +132,26 @@ const Playlists = () => {
       setSelectedRows([]);
       setLoading(false);
     }
+  };
+
+  const renderFooter = () => {
+    if (!loadingMore) {
+      return null;
+    }
+
+    return (
+      <View
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          paddingVertical: 20,
+          marginTop: 10,
+          marginBottom: 10,
+        }}>
+        <ActivityIndicator animating size="large" />
+      </View>
+    );
   };
 
   const getUnion = async () => {
@@ -234,9 +270,13 @@ const Playlists = () => {
                 theme={theme}
               />
             )}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.name}
             onRefresh={handleRefresh}
             refreshing={refreshing}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.1}
+            initialNumToRender={ITEMS_PER_PAGE}
+            ListFooterComponent={renderFooter}
           />
           {selectedRows.length === 2 &&
             ActionSheet.show(
