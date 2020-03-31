@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, NativeModules, StyleSheet, View} from 'react-native';
 import {
   Container,
   Content,
@@ -17,17 +17,24 @@ import {Ionicons} from '@expo/vector-icons';
 import {AppTitle} from 'components/AppTitle';
 import LoginButton from 'components/Button';
 
+import useAuth from 'hooks/auth';
 import theme from 'styles/theme.style.js';
 
 import API from 'api';
 
-function ProfileScreen() {
+const ProfileScreen = () => {
   const [user, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {removeSession} = useAuth();
 
   useEffect(() => {
     getData();
   }, []);
+
+  const logout = async () => {
+    await removeSession();
+    NativeModules.DevSettings.reload();
+  };
 
   const getData = async () => {
     try {
@@ -130,14 +137,14 @@ function ProfileScreen() {
               </Text>
             </View>
             <View style={styles.logoutButtonContainer}>
-              <LoginButton text="LOGOUT" rounded color="#fff" />
+              <LoginButton text="LOGOUT" onPress={() => logout()} />
             </View>
           </Content>
         </Container>
       )}
     </Root>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
