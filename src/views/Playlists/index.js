@@ -87,15 +87,12 @@ const Playlists = () => {
     }
   };
 
-  const getIntersection = async () => {
+  const getNewPlaylistByMethod = async method => {
     try {
       setLoading(true);
       const [firstPlaylist, secondPlaylist] = selectedRows;
       const startTime = Date.now();
-      const response = await API.Spotify.GetIntersection(
-        firstPlaylist,
-        secondPlaylist,
-      );
+      const response = await method(firstPlaylist, secondPlaylist);
       const endTime = Date.now();
       const time = endTime - startTime;
       if (response) {
@@ -132,6 +129,18 @@ const Playlists = () => {
       setSelectedRows([]);
       setLoading(false);
     }
+  };
+
+  const getIntersection = async () => {
+    await getNewPlaylistByMethod(API.Spotify.GetIntersection);
+  };
+
+  const getUnion = async () => {
+    await getNewPlaylistByMethod(API.Spotify.GetUnion);
+  };
+
+  const getIntersectionJS = async () => {
+    await getNewPlaylistByMethod(intersect);
   };
 
   const renderFooter = () => {
@@ -152,97 +161,6 @@ const Playlists = () => {
         <ActivityIndicator animating size="large" />
       </View>
     );
-  };
-
-  const getUnion = async () => {
-    try {
-      setLoading(true);
-      const [firstPlaylist, secondPlaylist] = selectedRows;
-      const startTime = Date.now();
-      const response = await API.Spotify.GetUnion(
-        firstPlaylist,
-        secondPlaylist,
-      );
-      const endTime = Date.now();
-      const time = endTime - startTime;
-      if (response) {
-        Alert.alert(
-          `Your new playlist ${response.name} is ready!`,
-          `${response.name} contains a total of ${
-            response.tracks
-          } tracks. You can check your playlist on Spotify right now or continue in Settify. It took me around ${time} ms to process this request.`,
-          [
-            {
-              text: 'Take me there!',
-              onPress: () =>
-                Linking.openURL(
-                  `https://open.spotify.com/playlist/${response.href}`,
-                ),
-              style: 'cancel',
-            },
-            {
-              text: 'Continue',
-              onPress: () => NativeModules.DevSettings.reload(),
-            },
-          ],
-        );
-      } else {
-        Alert.alert(
-          'Your playlist could not be created :(',
-          `There are no tracks matching between the playlists. It took me around ${time} ms to process this request.`,
-          [{text: 'OK'}],
-        );
-      }
-    } catch (error) {
-      Notify.error('An error occured while intersecting the playlists', error);
-    } finally {
-      setSelectedRows([]);
-      setLoading(false);
-    }
-  };
-
-  const getIntersectionJS = async () => {
-    try {
-      setLoading(true);
-      const [firstPlaylist, secondPlaylist] = selectedRows;
-      const startTime = Date.now();
-      const response = await intersect(firstPlaylist, secondPlaylist);
-      const endTime = Date.now();
-      const time = endTime - startTime;
-      if (response) {
-        Alert.alert(
-          `Your new playlist ${response.name} is ready!`,
-          `${response.name} contains a total of ${
-            response.tracks
-          } tracks. You can check your playlist on Spotify right now or continue in Settify. It took me around ${time} ms to process this request.`,
-          [
-            {
-              text: 'Take me there!',
-              onPress: () =>
-                Linking.openURL(
-                  `https://open.spotify.com/playlist/${response.href}`,
-                ),
-              style: 'cancel',
-            },
-            {
-              text: 'Continue',
-              onPress: () => NativeModules.DevSettings.reload(),
-            },
-          ],
-        );
-      } else {
-        Alert.alert(
-          'Your playlist could not be created :(',
-          `There are no tracks matching between the playlists. It took me around ${time} ms to process this request.`,
-          [{text: 'OK'}],
-        );
-      }
-    } catch (error) {
-      Notify.error('An error occured while intersecting the playlists', error);
-    } finally {
-      setSelectedRows([]);
-      setLoading(false);
-    }
   };
 
   return (
