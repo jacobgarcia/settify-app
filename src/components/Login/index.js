@@ -12,7 +12,7 @@ import theme from 'styles/theme.style.js';
 import {Title, Subtitle} from './styled';
 
 import Playlists from 'views/Playlists';
-import Profile from 'views/Settings';
+import Profile from 'views/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -85,8 +85,8 @@ const Login = () => {
 
                 if (route.name === 'Playlists') {
                   iconName = 'ios-musical-notes';
-                } else if (route.name === 'Settings') {
-                  iconName = 'ios-settings';
+                } else if (route.name === 'Profile') {
+                  iconName = 'ios-person';
                 }
 
                 // You can return any component that you like here!
@@ -98,7 +98,7 @@ const Login = () => {
               inactiveTintColor: 'gray',
             }}>
             <Tab.Screen name="Playlists" component={Playlists} />
-            <Tab.Screen name="Settings" component={Profile} />
+            <Tab.Screen name="Profile" component={Profile} />
           </Tab.Navigator>
         </NavigationContainer>
       )}
