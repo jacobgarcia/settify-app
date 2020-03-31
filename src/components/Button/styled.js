@@ -39,12 +39,13 @@ const StyledButtonView = styled.View`
   border-radius: 32px;
   padding: 0px 8px;
   margin: 8px;
-  height: 40px;
-  ${props => BUTTON_STYLES[props.kind] || BUTTON_STYLES.primary}
+  height: 45px;
+  ${props => BUTTON_STYLES[props.kind] || BUTTON_STYLES.primary};
 `;
 
 const ButtonText = styled(Text)`
   color: white;
+  font-weight: 600;
 `;
 
 export {StyledButtonView, ButtonText};

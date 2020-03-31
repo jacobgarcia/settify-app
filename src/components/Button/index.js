@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {StyleSheet} from 'react-native';
-import {Button as RNButton, Text} from 'native-base';
-import theme from 'styles/theme.style.js';
+import {Button as RNButton} from 'native-base';
 import {StyledButtonView, ButtonText} from './styled';
 
 const Button = props => {
@@ -11,15 +10,12 @@ const Button = props => {
     onClick,
     disabled,
     rounded,
-    uppercase,
     loading,
-    className,
     kind,
     text,
-    children,
     type,
     id,
-    ...rest
+    onPress,
   } = props;
 
   return (
@@ -27,14 +23,13 @@ const Button = props => {
       <RNButton
         id={id}
         type={type}
-        className={className}
         onClick={onClick}
         disabled={disabled || loading}
         kind={kind}
         rounded={rounded}
-        {...rest}
+        transparent
         style={styles.button}
-        transparent>
+        onPress={onPress}>
         <ButtonText>{text}</ButtonText>
       </RNButton>
     </StyledButtonView>
@@ -43,14 +38,8 @@ const Button = props => {
 
 const styles = StyleSheet.create({
   button: {
-    fontFamily: theme.FAMILY_SANS_SERIF,
-    fontWeight: 'bold',
-    lineHeight: 32,
-    textAlign: 'center',
-    width: 'auto',
-    fontSize: 16,
-    minHeight: 36,
-    minWidth: 120,
+    minWidth: 160,
+    marginLeft: 80,
   },
 });
 
@@ -63,7 +52,6 @@ Button.propTypes = {
   id: PropTypes.string,
   text: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-  className: PropTypes.string,
   type: PropTypes.oneOf(['button', 'submit', 'reset']),
   kind: PropTypes.oneOf([
     'primary',
@@ -83,7 +71,6 @@ Button.defaultProps = {
   uppercase: false,
   id: '',
   text: '',
-  className: '',
   kind: 'primary',
   type: 'button',
 };
