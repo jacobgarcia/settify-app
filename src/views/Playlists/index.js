@@ -29,7 +29,7 @@ import {AppTitle} from './styled';
 
 const ITEMS_PER_PAGE = 20;
 
-const Playlists = () => {
+const Playlists = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -87,12 +87,12 @@ const Playlists = () => {
     }
   };
 
-  const getNewPlaylistByMethod = async method => {
+  const getNewPlaylistByMethod = async (method, name) => {
     try {
       setLoading(true);
       const [firstPlaylist, secondPlaylist] = selectedRows;
       const startTime = Date.now();
-      const response = await method(firstPlaylist, secondPlaylist);
+      const response = await method(firstPlaylist, secondPlaylist, name);
       const endTime = Date.now();
       const time = endTime - startTime;
       if (response) {
@@ -131,16 +131,16 @@ const Playlists = () => {
     }
   };
 
-  const getIntersection = async () => {
-    await getNewPlaylistByMethod(API.Spotify.GetIntersection);
+  const getIntersection = async name => {
+    await getNewPlaylistByMethod(API.Spotify.GetIntersection, name);
   };
 
-  const getUnion = async () => {
-    await getNewPlaylistByMethod(API.Spotify.GetUnion);
+  const getUnion = async name => {
+    await getNewPlaylistByMethod(API.Spotify.GetUnion, name);
   };
 
-  const getIntersectionJS = async () => {
-    await getNewPlaylistByMethod(intersect);
+  const getIntersectionJS = async name => {
+    await getNewPlaylistByMethod(intersect, name);
   };
 
   const renderFooter = () => {
@@ -207,15 +207,21 @@ const Playlists = () => {
               buttonIndex => {
                 /* intersect action */
                 if (buttonIndex === 0) {
-                  getIntersection();
+                  navigation.navigate('CreatePlaylist', {
+                    createPlaylist: getIntersection,
+                  });
                 }
                 /* union action */
                 if (buttonIndex === 1) {
-                  getUnion();
+                  navigation.navigate('CreatePlaylist', {
+                    createPlaylist: getUnion,
+                  });
                 }
                 /* intersection JS action */
                 if (buttonIndex === 2) {
-                  getIntersectionJS();
+                  navigation.navigate('CreatePlaylist', {
+                    createPlaylist: getIntersectionJS,
+                  });
                 }
               },
             )}

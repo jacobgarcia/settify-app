@@ -1,24 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Image, NativeModules} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {AuthSession} from 'expo';
-import {Ionicons} from '@expo/vector-icons';
+
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import LoginButton from 'components/Button';
 import Logo from 'assets/image.png';
 import useAuth from 'hooks/auth';
-import theme from 'styles/theme.style.js';
 import {Title, Subtitle} from './styled';
 
-import Playlists from 'views/Playlists';
-import Profile from 'views/Profile';
-
-const Tab = createBottomTabNavigator();
+import CreatePlaylist from 'views/CreatePlaylist';
+import Home from 'views/Home';
 
 const Login = () => {
   const {authenticate, hasToken} = useAuth();
   const [isAuth, setIsAuth] = useState(false);
+  const Stack = createStackNavigator();
 
   useEffect(() => {
     syncHasToken();
@@ -77,28 +75,14 @@ const Login = () => {
         </View>
       ) : (
         <NavigationContainer>
-          <Tab.Navigator
-            screenOptions={({route}) => ({
-              tabBarIcon: ({focused, color, size}) => {
-                let iconName;
-
-                if (route.name === 'Playlists') {
-                  iconName = 'ios-musical-notes';
-                } else if (route.name === 'Profile') {
-                  iconName = 'ios-person';
-                }
-
-                // You can return any component that you like here!
-                return <Ionicons name={iconName} size={size} color={color} />;
-              },
-            })}
-            tabBarOptions={{
-              activeTintColor: theme.COLOR_PRIMARY,
-              inactiveTintColor: 'gray',
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+              headerShown: false,
             }}>
-            <Tab.Screen name="Playlists" component={Playlists} />
-            <Tab.Screen name="Profile" component={Profile} />
-          </Tab.Navigator>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="CreatePlaylist" component={CreatePlaylist} />
+          </Stack.Navigator>
         </NavigationContainer>
       )}
     </>

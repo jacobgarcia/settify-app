@@ -7,9 +7,9 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {Text, AsyncStorage} from 'react-native';
+import {Text} from 'react-native';
 
-import Login from 'components/Login';
+import Login from 'views/Login';
 import {AuthProvider} from 'contexts/auth';
 
 import * as Font from 'expo-font';

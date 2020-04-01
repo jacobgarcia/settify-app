@@ -4,13 +4,13 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "web": "expo start --web"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.7",
     "@react-navigation/bottom-tabs": "^5.1.1",
     "@react-navigation/native": "^5.0.9",
+    "@react-navigation/stack": "^5.2.9",
     "axios": "^0.19.2",
     "eslint": "^6.8.0",
     "expo": "~36.0.0",
@@ -26,13 +26,35 @@
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.2.0",
     "react-native-web": "~0.11.7",
-    "styled-components": "^5.0.1"
+    "styled-components": "^5.0.1",
+    "unique-names-generator": "^4.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/register": "^7.7.7",
+    "@babel/traverse": "^7.7.4",
+    "@babel/types": "^7.7.4",
     "@react-native-community/eslint-config": "^0.0.7",
+    "@wdio/appium-service": "^5.16.11",
+    "@wdio/cli": "^5.18.1",
+    "@wdio/jasmine-framework": "^5.16.15",
+    "@wdio/local-runner": "^5.18.0",
+    "@wdio/sauce-service": "^5.16.10",
+    "@wdio/spec-reporter": "^5.16.11",
+    "@wdio/sync": "^5.17.0",
+    "babel-eslint": "^10.0.3",
     "babel-preset-expo": "~8.0.0",
-    "reactotron-react-native": "^4.0.3"
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-wdio": "^5.13.2",
+    "node-fetch": "^2.6.0",
+    "reactotron-react-native": "^4.0.3",
+    "webdriverio": "^5.18.0"
   },
   "private": true
 }

@@ -70,7 +70,6 @@ const request = async ({
 
     return response.data;
   } catch (error) {
-    console.error(error);
     const {status, data: message} = error.response;
     return handleUnauthorized({status, message, reload: !skipAuth});
   }
@@ -78,13 +77,13 @@ const request = async ({
 
 const Spotify = {
   GetPlaylists: offset => request({url: `/playlists?offset=${offset}`}),
-  GetIntersection: (firstPlaylist, secondPlaylist) =>
+  GetIntersection: (firstPlaylist, secondPlaylist, name) =>
     request({
-      url: `/intersection?firstPlaylist=${firstPlaylist}&secondPlaylist=${secondPlaylist}`,
+      url: `/intersection?firstPlaylist=${firstPlaylist}&secondPlaylist=${secondPlaylist}&name=${name}`,
     }),
-  GetUnion: (firstPlaylist, secondPlaylist) =>
+  GetUnion: (firstPlaylist, secondPlaylist, name) =>
     request({
-      url: `/union?firstPlaylist=${firstPlaylist}&secondPlaylist=${secondPlaylist}`,
+      url: `/union?firstPlaylist=${firstPlaylist}&secondPlaylist=${secondPlaylist}&name=${name}`,
     }),
   GetProfile: () => request({url: '/me'}),
 };
