@@ -6,6 +6,8 @@ export default {
   SPACE_500: '24px',
   COLOR_PRIMARY: '#9373d8',
   COLOR_LIGHT_GREY_100: '#fff',
+  COLOR_DARK_GREY_100: '#979797',
+  COLOR_DARK_GREY_200: '#6e6e6e',
   COLOR_TITLE: '#113d4c',
   FONT_WEIGHT_BOLD: 700,
 };
