@@ -98,7 +98,12 @@ const Client = {
     request({url: `/playlists/${playlist}/tracks`, data}),
 };
 
-const operation = async (firstPlaylist, secondPlaylist, method) => {
+const operation = async (
+  firstPlaylist,
+  secondPlaylist,
+  playlistName,
+  method,
+) => {
   // First we need to retrieve the first playlist tracks
   try {
     const first = await Client.GetPlaylist(firstPlaylist);
@@ -112,7 +117,7 @@ const operation = async (firstPlaylist, secondPlaylist, method) => {
     // Next, we need the user.id of the current session.
     // This is a requirement to create the new playlist.
     const user = await Client.GetProfile();
-    const name = shortName();
+    const name = playlistName ? playlistName : shortName();
 
     // Next, we create the empty playlist with a new random name
     const playlist = await Client.CreatePlaylist(user.id, {name});
@@ -151,8 +156,8 @@ const getIntersection = (firstPlaylistTracks, secondPlaylistTracks) => {
   return intersection;
 };
 
-const intersect = async (firstPlaylist, secondPlaylist) => {
-  return operation(firstPlaylist, secondPlaylist, getIntersection);
+const intersect = async (firstPlaylist, secondPlaylist, name) => {
+  return operation(firstPlaylist, secondPlaylist, name, getIntersection);
 };
 
 export {Client, intersect};
