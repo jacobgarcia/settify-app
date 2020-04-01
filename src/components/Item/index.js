@@ -9,6 +9,7 @@ import {
   Text,
   Thumbnail,
 } from 'native-base';
+import capitalize from 'capitalize';
 
 const Item = ({playlist, handleCheck, selectedRows, theme}) => (
   <ListItem
@@ -26,7 +27,7 @@ const Item = ({playlist, handleCheck, selectedRows, theme}) => (
     <Body>
       <Text>{playlist.name}</Text>
       <Text note numberOfLines={1}>
-        by {playlist.owner}
+        {`by ${capitalize(playlist.owner)}`}
       </Text>
     </Body>
     <Right>
