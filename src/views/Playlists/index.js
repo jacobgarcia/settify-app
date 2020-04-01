@@ -223,6 +223,10 @@ const Playlists = ({navigation}) => {
                     createPlaylist: getIntersectionJS,
                   });
                 }
+                /* cancel action */
+                if (buttonIndex === 3) {
+                  setSelectedRows([]);
+                }
               },
             )}
         </Container>
