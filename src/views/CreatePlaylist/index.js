@@ -52,11 +52,12 @@ const CreatePlaylist = ({route, navigation}) => {
                 color: '#6e6e6e',
                 fontWeight: 'bold',
               }}>
-              Give your playlist a name.
+              Give your playlist a name
             </Text>
             <Item
               style={{
                 marginTop: 50,
+                width: '90%',
               }}>
               <Input
                 textAlign="center"
