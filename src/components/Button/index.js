@@ -16,6 +16,7 @@ const Button = props => {
     type,
     id,
     onPress,
+    styles,
   } = props;
 
   return (
@@ -28,20 +29,13 @@ const Button = props => {
         kind={kind}
         rounded={rounded}
         transparent
-        style={styles.button}
+        style={styles}
         onPress={onPress}>
         <ButtonText>{text}</ButtonText>
       </RNButton>
     </StyledButtonView>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    minWidth: 160,
-    marginLeft: 80,
-  },
-});
 
 Button.propTypes = {
   onClick: PropTypes.func,

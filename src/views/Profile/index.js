@@ -72,7 +72,7 @@ const ProfileScreen = () => {
             <Right />
           </Header>
 
-          <Content contentContainerStyle={styles.logo}>
+          <Content contentContainerStyle={styles.profile}>
             <Thumbnail
               style={{
                 height: 120,
@@ -147,50 +147,7 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    width: '100%',
-  },
-  topContainer: {
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  middleContainer: {
-    flex: 3,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  bottomContainer: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    width: '50%',
-    margin: 20,
-  },
-  image: {
-    width: 300,
-    height: 300,
-    justifyContent: 'center',
-  },
-  loadingContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  settings: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logo: {
+  profile: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -201,6 +158,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginTop: 160,
+  },
+  button: {
+    minWidth: 160,
+    marginLeft: 80,
   },
 });
 

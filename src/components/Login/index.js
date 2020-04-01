@@ -69,10 +69,9 @@ const Login = () => {
           </View>
           <View style={styles.bottomContainer}>
             <LoginButton
-              text="Login With Spotify"
+              text="LOGIN WITH SPOTIFY"
+              styles={styles.button}
               onPress={() => handleLogin()}
-              rounded
-              color="#fff"
             />
           </View>
         </View>
@@ -127,9 +126,8 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    width: '50%',
-    margin: 20,
+    alignItems: 'center',
+    width: '100%',
   },
   image: {
     width: 300,
@@ -155,12 +153,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  logoutButtonContainer: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 160,
+  button: {
+    minWidth: 160,
   },
 });
 
