@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {AsyncStorage} from 'react-native';
+
 import API from 'api';
 
 const AuthContext = React.createContext();
@@ -18,12 +19,14 @@ export const IMAGE = 'image';
 const getProfile = async () => {
   try {
     const name = await AsyncStorage.getItem(NAME);
-    const email = await AsyncStorage.get(EMAIL);
-    const image = await AsyncStorage.get(IMAGE);
+    const email = await AsyncStorage.getItem(EMAIL);
+    const image = await AsyncStorage.getItem(IMAGE);
+    const id = await AsyncStorage.getItem(ID);
     return {
       name,
       email,
       image,
+      id,
     };
   } catch (error) {
     console.error(error);
@@ -69,7 +72,7 @@ export const AuthProvider = ({children}) => {
         setHasToken(true);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -84,6 +87,7 @@ export const AuthProvider = ({children}) => {
         email,
         images,
       } = await API.Spotify.GetProfile();
+
       await setProfile(name, email, id, images);
     } catch (error) {
       console.error('Ocurrió un error en el servidor al iniciar sesión.');

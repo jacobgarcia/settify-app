@@ -4,18 +4,15 @@ import {
   Button,
   Container,
   Content,
-  Header,
   Input,
   Item,
-  Left,
-  Body,
-  Right,
   Root,
   Text,
+  Toast,
 } from 'native-base';
 
 import {AppTitle} from 'components/AppTitle';
-
+import API from 'api';
 import theme from 'styles/theme.style.js';
 
 const CreatePlaylist = ({navigation}) => {
@@ -23,7 +20,28 @@ const CreatePlaylist = ({navigation}) => {
   const [loading, setLoading] = useState(false);
 
   const handlePress = async () => {
-    navigation.navigate('Playlists', {username});
+    try {
+      const offset = 20 * ((parseInt(1, 10) || 1) - 1);
+      const {items} = await API.Spotify.GetUserPlaylists(offset, username);
+      if (!items) {
+        throw new Error('404');
+      }
+      navigation.navigate('Playlists', {username, screenIndex: 0});
+    } catch (error) {
+      if (error.message === '404') {
+        navigation.push('NotFound', {username});
+      } else {
+        Toast.show({
+          text: 'An error occured while getting the playlists',
+          type: 'danger',
+          textStyle: {
+            textAlign: 'center',
+          },
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,13 +52,6 @@ const CreatePlaylist = ({navigation}) => {
         </View>
       ) : (
         <Container>
-          <Header style={{backgroundColor: theme.COLOR_PRIMARY}}>
-            <Left />
-            <Body>
-              <AppTitle>Social</AppTitle>
-            </Body>
-            <Right />
-          </Header>
           <Content contentContainerStyle={styles.profile}>
             <Item
               style={{

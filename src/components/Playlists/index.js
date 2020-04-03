@@ -8,36 +8,30 @@ import {
   View,
 } from 'react-native';
 import {Linking} from 'expo';
-import {
-  ActionSheet,
-  Body,
-  Container,
-  Header,
-  Left,
-  Right,
-  Root,
-  Toast,
-} from 'native-base';
+import {ActionSheet, Container, Root, Toast} from 'native-base';
 
-import Item from 'components/Item';
+import SingleItem from 'components/SingleItem';
 import theme from 'styles/theme.style.js';
 import Notify from 'utils/Notify';
 
 import API from 'api';
 import {intersect} from 'api/spotify';
-import {AppTitle} from './styled';
+
+import useAuth from 'hooks/auth';
 
 const ITEMS_PER_PAGE = 20;
 
 const Playlists = ({navigation, route}) => {
+  const {username, screenIndex, rows} = route.params;
+  const {getProfile} = useAuth();
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState(rows || []);
   const [refreshing, setRefreshing] = useState(false);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
-
-  const {username} = route.params;
+  const [playlistName, setPlaylistName] = useState('');
 
   useEffect(() => {
     getData();
@@ -81,7 +75,8 @@ const Playlists = ({navigation, route}) => {
     setPage(prevPage => prevPage + 1);
   };
 
-  const handleCheck = id => {
+  const handleCheck = (id, name) => {
+    setPlaylistName(name);
     if (selectedRows.includes(id)) {
       setSelectedRows(state => state.filter(e => e !== id));
     } else {
@@ -145,6 +140,15 @@ const Playlists = ({navigation, route}) => {
     await getNewPlaylistByMethod(intersect, name);
   };
 
+  const navigateNextScreen = async () => {
+    const {id} = await getProfile();
+    navigation.push('Playlists', {
+      username: JSON.parse(id),
+      screenIndex: 1,
+      rows: selectedRows,
+    });
+  };
+
   const renderFooter = () => {
     if (!loadingMore) {
       return null;
@@ -173,17 +177,10 @@ const Playlists = ({navigation, route}) => {
         </View>
       ) : (
         <Container>
-          <Header style={{backgroundColor: theme.COLOR_PRIMARY}}>
-            <Left />
-            <Body>
-              <AppTitle>{username} playlists</AppTitle>
-            </Body>
-            <Right />
-          </Header>
           <FlatList
             data={data}
             renderItem={({item}) => (
-              <Item
+              <SingleItem
                 playlist={item}
                 handleCheck={handleCheck}
                 selectedRows={selectedRows}
@@ -199,6 +196,7 @@ const Playlists = ({navigation, route}) => {
             ListFooterComponent={renderFooter}
           />
           {selectedRows.length === 2 &&
+            screenIndex === 1 &&
             ActionSheet.show(
               {
                 options: ['Intersect', 'Unify', 'IntersectJS', 'Cancel'],
@@ -231,6 +229,19 @@ const Playlists = ({navigation, route}) => {
                 }
               },
             )}
+          {selectedRows.length === 1 &&
+            screenIndex === 0 &&
+            Alert.alert(playlistName, 'Are you sure to use this playlist?', [
+              {
+                text: 'Cancel',
+                onPress: () => setSelectedRows([]),
+                style: 'cancel',
+              },
+              {
+                text: 'Continue',
+                onPress: async () => await navigateNextScreen(),
+              },
+            ])}
         </Container>
       )}
     </Root>

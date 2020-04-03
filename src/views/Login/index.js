@@ -35,7 +35,7 @@ const Login = () => {
       const {access_token: token, expires_in: expiration} = data.params;
       if (token) {
         // Set token
-        authenticate({
+        await authenticate({
           token,
           expiration:
             parseInt(Date.now(), 10) + parseInt(expiration * 1000, 10),

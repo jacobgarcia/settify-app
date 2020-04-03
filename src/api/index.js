@@ -21,6 +21,10 @@ const handleUnauthorized = async ({status}) => {
     throw new Error('Forbidden');
   }
 
+  if (status === 404) {
+    throw new Error(404);
+  }
+
   throw new Error('Unexpected server error');
 };
 
