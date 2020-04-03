@@ -4,6 +4,7 @@ import {Ionicons} from '@expo/vector-icons';
 
 import Playlists from 'views/Playlists';
 import Profile from 'views/Profile';
+import Social from 'views/Social';
 
 import theme from 'styles/theme.style.js';
 
@@ -20,6 +21,8 @@ const Main = () => {
             iconName = 'ios-musical-notes';
           } else if (route.name === 'Profile') {
             iconName = 'ios-person';
+          } else if (route.name === 'Social') {
+            iconName = 'ios-people';
           }
 
           // You can return any component that you like here!
@@ -32,6 +35,7 @@ const Main = () => {
         visible: false,
       }}>
       <Tab.Screen name="Playlists" component={Playlists} />
+      <Tab.Screen name="Social" component={Social} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

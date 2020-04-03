@@ -42,7 +42,7 @@ const ProfileScreen = () => {
       setData(data);
     } catch (error) {
       Toast.show({
-        text: 'An error occured while getting the playlists',
+        text: 'An error occured while getting the user',
         type: 'danger',
         textStyle: {
           textAlign: 'center',
