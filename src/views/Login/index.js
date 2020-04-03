@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Image, NativeModules} from 'react-native';
+import {Dimensions, StyleSheet, View, Image, NativeModules} from 'react-native';
 import {AuthSession} from 'expo';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -12,6 +12,10 @@ import {Title, Subtitle} from './styled';
 
 import CreatePlaylist from 'views/CreatePlaylist';
 import Home from 'views/Home';
+
+const dimensions = Dimensions.get('window');
+const imageHeight = Math.round(dimensions.width / 2);
+const imageWidth = dimensions.width / 2;
 
 const Login = () => {
   const {authenticate, hasToken} = useAuth();
@@ -114,8 +118,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   image: {
-    width: 300,
-    height: 300,
+    width: imageWidth,
+    height: imageHeight,
     justifyContent: 'center',
   },
   loadingContainer: {
