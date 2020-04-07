@@ -42,7 +42,16 @@ const Social = () => {
       <Stack.Screen
         name="NotFound"
         component={NotFound}
-        options={{title: ''}}
+        options={{
+          title: 'No Playlists Found',
+          headerStyle: {
+            backgroundColor: theme.COLOR_PRIMARY,
+          },
+          headerTintColor: theme.COLOR_LIGHT_GREY_100,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
     </Stack.Navigator>
   );
