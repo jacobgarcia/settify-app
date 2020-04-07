@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {StyleSheet} from 'react-native';
 import {Button as RNButton} from 'native-base';
 import {StyledButtonView, ButtonText} from './styled';
 
