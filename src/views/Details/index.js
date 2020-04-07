@@ -1,16 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
-import {Container, Root, Text, Thumbnail, Toast} from 'native-base';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  StyleSheet,
+  View,
+} from 'react-native';
+import {Button, Container, Root, Text, Thumbnail, Toast} from 'native-base';
+import {Ionicons} from '@expo/vector-icons';
+
 import SongItem from 'components/SongItem';
 import theme from 'styles/theme.style.js';
 import API from 'api';
 
 const ITEMS_PER_PAGE = 20;
 
-const Playlist = () => {
+const Playlist = ({navigation}) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRows, setSelectedRows] = useState([]);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const uri = 'https://live.staticflickr.com/5624/22923915864_56bba36dd2_b.jpg';
@@ -48,12 +55,17 @@ const Playlist = () => {
     setPage(prevPage => prevPage + 1);
   };
 
-  const handleCheck = id => {
-    if (selectedRows.includes(id)) {
-      setSelectedRows(state => state.filter(e => e !== id));
-    } else {
-      setSelectedRows(state => [...state, id]);
-    }
+  const handleClick = () => {
+    Alert.alert('Untold Stories', 'Do you want to split this playlist?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Yes',
+        onPress: () => navigation.navigate('SplitPlaylist'),
+      },
+    ]);
   };
 
   const renderFooter = () => {
@@ -79,12 +91,25 @@ const Playlist = () => {
   return (
     <Root>
       <Container>
+        <View style={{alignItems: 'flex-end'}}>
+          <Button
+            transparent
+            onPress={() => handleClick()}
+            style={{margin: 15}}>
+            <Ionicons
+              name="ios-cut"
+              style={{
+                fontSize: 30,
+                color: '#6e6e6e',
+              }}
+            />
+          </Button>
+        </View>
         <View style={styles.profile}>
           <Thumbnail
             style={{
               height: 200,
               width: 200,
-              marginTop: 40,
               borderRadius: 0,
             }}
             large
@@ -111,14 +136,7 @@ const Playlist = () => {
 
         <FlatList
           data={data}
-          renderItem={({item}) => (
-            <SongItem
-              playlist={item}
-              handleCheck={handleCheck}
-              selectedRows={selectedRows}
-              theme={theme}
-            />
-          )}
+          renderItem={({item}) => <SongItem playlist={item} theme={theme} />}
           keyExtractor={item => item.id}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.1}

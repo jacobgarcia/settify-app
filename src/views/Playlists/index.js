@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import PlaylistsList from 'views/PlaylistsList';
 import Details from 'views/Details';
+import SplitPlaylist from 'views/SplitPlaylist';
 
 import theme from 'styles/theme.style.js';
 
@@ -29,6 +30,20 @@ const Social = () => {
         component={Details}
         options={{
           title: 'Details',
+          headerStyle: {
+            backgroundColor: theme.COLOR_PRIMARY,
+          },
+          headerTintColor: theme.COLOR_LIGHT_GREY_100,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="SplitPlaylist"
+        component={SplitPlaylist}
+        options={{
+          title: 'Split Playlist',
           headerStyle: {
             backgroundColor: theme.COLOR_PRIMARY,
           },

@@ -11,7 +11,6 @@ import {
   Toast,
 } from 'native-base';
 
-import {AppTitle} from 'components/AppTitle';
 import API from 'api';
 import theme from 'styles/theme.style.js';
 
@@ -52,7 +51,7 @@ const CreatePlaylist = ({navigation}) => {
         </View>
       ) : (
         <Container>
-          <Content contentContainerStyle={styles.profile}>
+          <Content contentContainerStyle={styles.inputScreenContainer}>
             <Item
               style={{
                 marginTop: 220,
@@ -89,7 +88,7 @@ const CreatePlaylist = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  profile: {
+  inputScreenContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -102,17 +101,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  logoutButtonContainer: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 160,
-  },
-  button: {
-    minWidth: 160,
-    marginLeft: 80,
   },
 });
 
