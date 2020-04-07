@@ -8,16 +8,7 @@ import {
   View,
 } from 'react-native';
 import {Linking} from 'expo';
-import {
-  ActionSheet,
-  Body,
-  Container,
-  Header,
-  Left,
-  Right,
-  Root,
-  Toast,
-} from 'native-base';
+import {ActionSheet, Container, Root, Toast} from 'native-base';
 
 import Item from 'components/Item';
 import theme from 'styles/theme.style.js';
@@ -25,7 +16,6 @@ import Notify from 'utils/Notify';
 
 import API from 'api';
 import {intersect} from 'api/spotify';
-import {AppTitle} from './styled';
 
 const ITEMS_PER_PAGE = 20;
 
