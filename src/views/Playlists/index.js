@@ -34,12 +34,13 @@ const Playlists = ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [refetch, setRefetch] = useState(0);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, refetch]);
 
   const getData = async () => {
     try {
@@ -70,8 +71,16 @@ const Playlists = ({navigation}) => {
   };
 
   const handleRefresh = async () => {
+    // We start a pull refresh action, we update our current refreshing state
     setRefreshing(true);
-    setPage(1);
+
+    // If the page is 1, we still need to call our getData function, but, since the page is 1, there
+    // is no useEffect run and no getData call. We use our refetch flag in order to do so.
+    if (page === 1) {
+      setRefetch(prevData => ++prevData);
+    } else {
+      setPage(1);
+    }
   };
 
   const handleLoadMore = async () => {
@@ -188,7 +197,7 @@ const Playlists = ({navigation}) => {
                 theme={theme}
               />
             )}
-            keyExtractor={item => item.name}
+            keyExtractor={item => item.id}
             onRefresh={handleRefresh}
             refreshing={refreshing}
             onEndReached={handleLoadMore}
