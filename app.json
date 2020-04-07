@@ -24,6 +24,7 @@
     "androidStatusBar": {
       "barStyle": "light-content",
       "backgroundColor": "#fff"
-    }
+    },
+    "scheme": "settify"
   }
 }
