@@ -35,16 +35,19 @@ const Login = () => {
         )}&scope=user-read-private%20user-read-email%20playlist-modify-public%20playlist-read-private&response_type=token&state=123`,
       });
 
-      // Set token
-      const {access_token: token, expires_in: expiration} = data.params;
-      if (token) {
+      // Check if it's not the cancel button
+      if (data.params) {
         // Set token
-        await authenticate({
-          token,
-          expiration:
-            parseInt(Date.now(), 10) + parseInt(expiration * 1000, 10),
-        });
-        NativeModules.DevSettings.reload();
+        const {access_token: token, expires_in: expiration} = data.params;
+        if (token) {
+          // Set token
+          await authenticate({
+            token,
+            expiration:
+              parseInt(Date.now(), 10) + parseInt(expiration * 1000, 10),
+          });
+          NativeModules.DevSettings.reload();
+        }
       }
     } catch (error) {
       console.error(error);
