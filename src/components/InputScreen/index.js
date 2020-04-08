@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {
   Button,
@@ -14,7 +15,13 @@ import {
 import API from 'api';
 import theme from 'styles/theme.style.js';
 
-const CreatePlaylist = ({navigation}) => {
+const CreatePlaylist = ({
+  navigation,
+  placeholder,
+  title,
+  isNumeric,
+  buttonText,
+}) => {
   const [username, setUserName] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -52,17 +59,28 @@ const CreatePlaylist = ({navigation}) => {
       ) : (
         <Container>
           <Content contentContainerStyle={styles.inputScreenContainer}>
-            <Item
+            <Text
               style={{
                 marginTop: 220,
+                fontSize: 17,
+                color: '#6e6e6e',
+                fontWeight: 'bold',
+              }}>
+              {title}
+            </Text>
+
+            <Item
+              style={{
+                marginTop: 50,
                 width: '90%',
               }}>
               <Input
                 textAlign="center"
                 style={{fontSize: 30, fontWeight: 'bold', color: '#6e6e6e'}}
                 onChangeText={playlistName => setUserName(playlistName)}
-                placeholder="Username"
+                placeholder={placeholder}
                 placeholderTextColor={theme.COLOR_LIGHT_GREY_300}
+                keyboardType={isNumeric ? 'numeric' : 'default'}
               />
             </Item>
             <View
@@ -76,7 +94,7 @@ const CreatePlaylist = ({navigation}) => {
                 style={{minWidth: 80}}
                 onPress={() => handlePress()}>
                 <Text style={{color: theme.COLOR_PRIMARY, fontSize: 13}}>
-                  GET PLAYLISTS
+                  {buttonText.toUpperCase()}
                 </Text>
               </Button>
             </View>
@@ -103,5 +121,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+CreatePlaylist.propTypes = {
+  placeholder: PropTypes.string,
+  buttonText: PropTypes.string,
+};
+
+CreatePlaylist.defaultProps = {
+  placeholder: 'Username',
+  buttonText: 'Get Playlists',
+};
 
 export default CreatePlaylist;
